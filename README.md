@@ -1,12 +1,12 @@
 <p align="center">
-<a href="https://github.com/lias-laboratory/radius_clustering/blob/main/LICENSE"><img alt="License: GPLv3" src="https://img.shields.io/github/license/lias-laboratory/radius_clustering"></a>
+<a href="https://github.com/scikit-learn-contrib/radius_clustering/blob/main/LICENSE"><img alt="License: GPLv3" src="https://img.shields.io/github/license/scikit-learn-contrib/radius_clustering"></a>
 <a href="https://pypi.org/project/radius-clustering/"><img alt="PyPI" src="https://img.shields.io/pypi/v/radius-clustering"></a>
 <a href="https://docs.astral.sh/ruff/"><img alt="Code style: Ruff" src="https://img.shields.io/badge/style-ruff-41B5BE?style=flat"></a>
-<a href="https://lias-laboratory.github.io/radius_clustering/"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/lias-laboratory/radius_clustering/sphinx.yml?label=Doc%20Building"></a>
+<a href="https://contrib.scikit-learn.org/radius_clustering/"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/scikit-learn-contrib/radius_clustering/sphinx.yml?label=Doc%20Building"></a>
 <a><img alt="Python version supported" src="https://img.shields.io/pypi/pyversions/radius-clustering"></a>
 <a href="https://codecov.io/gh/scikit-learn-contrib/radius_clustering"><img alt="Codecov" src="https://codecov.io/gh/scikit-learn-contrib/radius_clustering/branch/master/graph/badge.svg"></a>
 <a href="https://mybinder.org/v2/gh/scikit-learn-contrib/radius_clustering/HEAD?urlpath=%2Fdoc%2Ftree%2Fnotebooks%2Fcomparison_example.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg"></a>
-<a href="https://doi.org/10.5281/zenodo.15830087"><img src="https://zenodo.org/badge/887316842.svg" alt="DOI"></a>
+<a href="https://zenodo.org/badge/latestdoi/887316842"><img src="https://zenodo.org/badge/887316842.svg" alt="DOI"></a>
 
 </p>
 
@@ -72,7 +72,7 @@ print(labels)
 
 ## Documentation
 
-You can find the full documentation for Radius Clustering [here](https://lias-laboratory.github.io/radius_clustering/).
+You can find the full documentation for Radius Clustering [here](https://contrib.scikit-learn.org/radius_clustering/).
 
 ### Building the documentation
 

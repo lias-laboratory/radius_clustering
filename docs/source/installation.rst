@@ -224,7 +224,7 @@ install the package using the following commands:
 
 .. prompt:: bash
 
-  git clone git@github.com:lias-laboratory/radius_clustering.git # clone the repository
+  git clone git@github.com:scikit-learn-contrib/radius_clustering.git # clone the repository
   cd radius_clustering
   python -m venv rad-env
   source rad-env/bin/activate  # activate

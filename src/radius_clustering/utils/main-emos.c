@@ -330,7 +330,7 @@ static inline int insert_cur_node(int node){
 
 
 
-static void test_iset_consistance(){
+static void test_iset_consistency(){
   for(int j=0;j<MAXIS;j++){
     if(USED(iSET[j])==0)
       break;
@@ -992,7 +992,7 @@ void search_domset(){
   #endif
   while(CUR_LEVEL>=0){
     #if CHECK
-    check_consistance();
+    check_consistency();
     #endif    
     if((bnode=CUR_BRA_NODE)!=NONE){
       rollback_branch_node(bnode);     
@@ -1070,7 +1070,7 @@ void search_domset(){
         }
       #endif
       #ifdef CHECK
-        test_iset_consistance();
+        test_iset_consistency();
       #endif
     #else
       for(int i=SUB_PROBLEM_SIZE-1;i>=CUR_UND_IDX;i--){
@@ -1456,7 +1456,7 @@ void check_and_save_solution(){
   }
 }
 
-void check_consistance(){
+void check_consistency(){
   
   for(int i=0;i<SUB_PROBLEM_SIZE;i++){
     assert(CFG[i]>=1 && CFG[i]<=NB_NODE);
@@ -1493,7 +1493,7 @@ void check_consistance(){
       assert(LOC[neibor]<CUR_UND_IDX);
     }
   }
-  // printf("pass consistance checking at level %d ...\n",CUR_LEVEL);
+  // printf("pass consistency checking at level %d ...\n",CUR_LEVEL);
   fflush(stdout);
 }
 

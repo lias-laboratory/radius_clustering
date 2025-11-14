@@ -563,7 +563,7 @@ static inline void reduce_graph(){
 extern void check_final_solution();
 extern void update_best_solution();
 extern void check_and_save_solution();
-extern void check_consistance();
+extern void check_consistency();
 extern void cleanup();
 extern int max_dominated_number();
 extern int select_branching_node();

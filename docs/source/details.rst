@@ -28,7 +28,7 @@ The Radius Clustering package implements a clustering algorithm based on the Min
 The MDS problem is a well-known NP-Hard problem in graph theory, and it has been proven to be linked to the clustering
 under radius constraint problem. The MDS problem is defined as follows:
 
-Given a undirected weighted graph :math:`G = (V,E)` where :math:`V` is a set of vertices and :math:`E` is a set of edges,
+Given an undirected weighted graph :math:`G = (V,E)` where :math:`V` is a set of vertices and :math:`E` is a set of edges,
 a dominating set :math:`D` is a subset of :math:`V` such that every vertex in :math:`V` is either in :math:`D` or
 adjacent to a vertex in :math:`D`. The goal is to find a dominating set :math:`D` such that the number of vertices in
 :math:`D` is minimized. This problem is known to be NP-Hard.

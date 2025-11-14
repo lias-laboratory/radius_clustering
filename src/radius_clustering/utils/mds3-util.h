@@ -256,7 +256,7 @@ static VEC_INT * VEC_SOLUTION;
 static int NB_FIXED=0,NEW_IDX=0,NB_UNFIXED=0;
 
 
-static void allcoate_memory_for_adjacency_list(int nb_node, int nb_edge,int offset) {
+static void allocate_memory_for_adjacency_list(int nb_node, int nb_edge,int offset) {
   int i, block_size = 40960000;
   unsigned int free_size = 0;
   Init_Adj_List = (int *) malloc((2 * nb_edge + nb_node) * sizeof(int));
@@ -309,7 +309,7 @@ static int _read_graph_from_edge_list(unsigned int* edges, int n, int nb_edges) 
   NB_NODE = max_node;
 
   Node_Neibors = (int **)malloc((NB_NODE + 1) * sizeof(int *));
-  allcoate_memory_for_adjacency_list(NB_NODE, nb_edge, 1);
+  allocate_memory_for_adjacency_list(NB_NODE, nb_edge, 1);
   memset(Node_Degree, 0, (NB_NODE + 1) * sizeof(int));
 
   nb_edge = 0;

@@ -38,7 +38,7 @@
 #define MAXIS 16
 
 #define for_each_vertex(node) for(int node=1;node<=NB_NODE;node++)
-#define for_each_neighbor(__vertex,__neibor)  for(int * __ptr=Node_Neibors[__vertex],__neibor=*__ptr;__neibor!=NONE;__neibor=*(++__ptr))
+#define for_each_neighbor(__vertex,__neighbor)  for(int * __ptr=Node_Neibors[__vertex],__neighbor=*__ptr;__neighbor!=NONE;__neighbor=*(++__ptr))
 
 #define domed(node) (STATUS[node].dominated)
 #define clr_domed_status(node) (STATUS[node].dominated=0)
@@ -387,50 +387,50 @@ static inline void reduce_graph2(){
     if(deleted(node))continue;
 
     set_marked_status(node);
-    for_each_neighbor(node,neibor){
-      set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      set_marked_status(neighbor);
     }
 
-    for_each_neighbor(node,neibor){
-      if(fixed(neibor)){
-	set_branched_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(fixed(neighbor)){
+	set_branched_status(neighbor);
 	continue;
       }
-      for_each_neighbor(neibor,neibor2){
-	if(!marked(neibor2)){
-	  set_branched_status(neibor);
+      for_each_neighbor(neighbor,neighbor2){
+	if(!marked(neighbor2)){
+	  set_branched_status(neighbor);
 	  break;
 	}
       }
     }
 
-    for_each_neighbor(node,neibor){
-      if(branched(neibor))
+    for_each_neighbor(node,neighbor){
+      if(branched(neighbor))
 	continue;
-      for_each_neighbor(neibor,neibor2){
-	if(branched(neibor2)){
-	  set_involved_status(neibor);
+      for_each_neighbor(neighbor,neighbor2){
+	if(branched(neighbor2)){
+	  set_involved_status(neighbor);
 	  break;
 	}
       }
-      if(!involved(neibor)){
+      if(!involved(neighbor)){
 	fixed(node)=1;
 	break;
       }
     }
     
     if(fixed(node)){
-      for_each_neighbor(node,neibor){
-	if(!branched(neibor))
-	  deleted(neibor)=1;
+      for_each_neighbor(node,neighbor){
+	if(!branched(neighbor))
+	  deleted(neighbor)=1;
       }
     }
 
     clr_marked_status(node);
-    for_each_neighbor(node,neibor){
-      clr_marked_status(neibor);
-      clr_involved_status(neibor); 
-      clr_branched_status(neibor);
+    for_each_neighbor(node,neighbor){
+      clr_marked_status(neighbor);
+      clr_involved_status(neighbor);
+      clr_branched_status(neighbor);
     }
   }
 
@@ -442,9 +442,9 @@ static inline void reduce_graph2(){
       continue;
     
     int *ptr=Node_Neibors[node],count=0;
-    for_each_neighbor(node,neibor){
-      if(!deleted(neibor)){
-	*ptr++=neibor;count++;
+    for_each_neighbor(node,neighbor){
+      if(!deleted(neighbor)){
+	*ptr++=neighbor;count++;
       }
     }
     *ptr=NONE;

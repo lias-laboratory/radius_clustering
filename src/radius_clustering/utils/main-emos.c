@@ -528,7 +528,7 @@ static int partition_free_vertices(){
     }
     total++;
   }
-  //  printf("  %d free vertice, lower bound = %d\n",total,lb);
+  //  printf("  %d free vertices, lower bound = %d\n",total,lb);
   return lb;  
 }
 
@@ -831,7 +831,7 @@ static int absorb_domed_node(int node){
   return TRUE;
 }
 
-static void reduce_dominated_vertice(){  
+static void reduce_dominated_vertices(){  
   for(int i=CUR_LEVEL;i<CUR_UND_IDX;i++){
     int node=CFG[i];
     assert(domed(node));

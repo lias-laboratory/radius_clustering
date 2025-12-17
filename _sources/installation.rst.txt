@@ -67,7 +67,7 @@ Installing from PyPI
             python -m pip show radius-clustering # show radius-clustering version and location
             python -m pip freeze             # show all installed packages in the environment
 
-    .. tab-item:: MacOS
+    .. tab-item:: macOS
       :class-label: tab-4
       :sync: macos
 
@@ -183,7 +183,7 @@ To install Radius Clustering from the source, you need to have a C and C++ compi
           In Build Tools, install C++ toolchain. Ensure that it is added to the system PATH.
           You are now ready to install Radius Clustering from source.
 
-    .. tab-item:: MacOS
+    .. tab-item:: macOS
       :class-label: tab-4
       :sync: macos
 

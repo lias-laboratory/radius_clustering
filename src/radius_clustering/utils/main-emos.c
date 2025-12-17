@@ -131,24 +131,24 @@ static int test_2adj(int node1,int node2){
     assert(marked(node)==0);
   }
   set_marked_status(node1);
-  for_each_neighbor(node1,neibor){
-    if(involved(neibor)){
-      set_marked_status(neibor); 
+  for_each_neighbor(node1,neighbor){
+    if(involved(neighbor)){
+      set_marked_status(neighbor);
     }
   }
   int adj=0;
-  for_each_neighbor(node2,neibor){
-    if(neibor==node1)
+  for_each_neighbor(node2,neighbor){
+    if(neighbor==node1)
       adj=1;
-    if(involved(neibor) && !branched(neibor) && marked(neibor)){
+    if(involved(neighbor) && !branched(neighbor) && marked(neighbor)){
       flag=1;
       break;
     }
   }
   clr_marked_status(node1);
-  for_each_neighbor(node1,neibor){
-    if(involved(neibor))
-      clr_marked_status(neibor);
+  for_each_neighbor(node1,neighbor){
+    if(involved(neighbor))
+      clr_marked_status(neighbor);
   }
   if(flag)
   return flag;
@@ -191,11 +191,11 @@ two vertices adj iif:
 */
 
 static inline  int is_2_adj(int marked_node,int test_node){
-   for_each_neighbor(test_node,neibor){
-     if(neibor==marked_node){
+   for_each_neighbor(test_node,neighbor){
+     if(neighbor==marked_node){
        if(!(branched(test_node) && branched(marked_node)))
 	 return 1;
-     }else if(involved(neibor) && !branched(neibor) && marked(neibor))
+     }else if(involved(neighbor) && !branched(neighbor) && marked(neighbor))
        return 1;
    }
    return 0;
@@ -235,15 +235,15 @@ static void build_adjacent_matrix_for_free_nodes(){
     for(int j=0;j<adjlen(idx);j++)
       push_back(ADJ_STK,unsigned,0);
     
-    for_each_neighbor(node,neibor){
-      if(active(neibor) && involved(neibor))
-	set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor) && involved(neighbor))
+	set_marked_status(neighbor);
     }
     
     for(int j=i+1;j<SUB_PROBLEM_SIZE;j++){
       int node1=CFG[j];
-      for_each_neighbor(node1,neibor){
-	if(marked(neibor)){
+      for_each_neighbor(node1,neighbor){
+	if(marked(neighbor)){
 	  assert(idx>PID[node1].newid);
 	  set_adj_bit(idx,PID[node1].newid);
 	  break;
@@ -258,9 +258,9 @@ static void build_adjacent_matrix_for_free_nodes(){
       }
     }
     clr_marked_status(node);
-     for_each_neighbor(node,neibor){
-       if(active(neibor) && involved(neibor))
-	clr_marked_status(neibor);
+     for_each_neighbor(node,neighbor){
+       if(active(neighbor) && involved(neighbor))
+	clr_marked_status(neighbor);
     }
   }
   for(int i=SUB_PROBLEM_SIZE-1;i>=CUR_UND_IDX;i--){
@@ -330,16 +330,16 @@ static inline int insert_cur_node(int node){
 
 
 
-static void test_iset_consistance(){
+static void test_iset_consistency(){
   for(int j=0;j<MAXIS;j++){
     if(USED(iSET[j])==0)
       break;
     for_each_vec_item(iSET[j],int,it){
       int node1=*it;
       set_marked_status(node1);
-      for_each_neighbor(node1,neibor){
-	if(active(neibor) && involved(neibor))
-	  set_marked_status(neibor);
+      for_each_neighbor(node1,neighbor){
+	if(active(neighbor) && involved(neighbor))
+	  set_marked_status(neighbor);
       }
       for_each_vec_item(iSET[j],int,it2){
 	int node2=*it2;
@@ -348,9 +348,9 @@ static void test_iset_consistance(){
 	}
       }
       clr_marked_status(node1);
-      for_each_neighbor(node1,neibor){
-	if(active(neibor) && involved(neibor))
-	  clr_marked_status(neibor);
+      for_each_neighbor(node1,neighbor){
+	if(active(neighbor) && involved(neighbor))
+	  clr_marked_status(neighbor);
       }
     }
   }
@@ -384,11 +384,11 @@ static int compute_initial_partition(){
     assert(!domed(cur_node));
  
     set_marked_status(cur_node);
-    for_each_neighbor(cur_node,neibor){
-      if(involved(neibor)){
-       assert(active(neibor));
-       assert(!domed(neibor)); 
-       set_marked_status(neibor);
+    for_each_neighbor(cur_node,neighbor){
+      if(involved(neighbor)){
+       assert(active(neighbor));
+       assert(!domed(neighbor));
+       set_marked_status(neighbor);
      }
     }
     
@@ -406,9 +406,9 @@ static int compute_initial_partition(){
       NEW_IDX++;
     }
     clr_marked_status(cur_node);
-    for_each_neighbor(cur_node,neibor){
-     if(involved(neibor))
-	 clr_marked_status(neibor);
+    for_each_neighbor(cur_node,neighbor){
+     if(involved(neighbor))
+	 clr_marked_status(neighbor);
     }
   }
   
@@ -449,11 +449,11 @@ static int compute_lowerbound_with_2adj(){
     int cur_node=CFG[i];
     assert(!domed(cur_node));    
     set_marked_status(cur_node);
-    for_each_neighbor(cur_node,neibor){
-      if(involved(neibor)){
-	assert(active(neibor));
-	assert(!domed(neibor));
-	set_marked_status(neibor);
+    for_each_neighbor(cur_node,neighbor){
+      if(involved(neighbor)){
+	assert(active(neighbor));
+	assert(!domed(neighbor));
+	set_marked_status(neighbor);
      }
     }
     
@@ -472,9 +472,9 @@ static int compute_lowerbound_with_2adj(){
     }
     // printf("\n");
     clr_marked_status(cur_node);
-    for_each_neighbor(cur_node,neibor){
-     if(involved(neibor))
-	 clr_marked_status(neibor);
+    for_each_neighbor(cur_node,neighbor){
+     if(involved(neighbor))
+	 clr_marked_status(neighbor);
     }
   }
   #ifndef REP
@@ -528,7 +528,7 @@ static int partition_free_vertices(){
     }
     total++;
   }
-  //  printf("  %d free vertice, lower bound = %d\n",total,lb);
+  //  printf("  %d free vertices, lower bound = %d\n",total,lb);
   return lb;  
 }
 
@@ -538,10 +538,10 @@ static inline  void clear_iset(int isetno,int insert_node){
   for_each_vec_item(iSET[isetno],int,it){
     int node=*it;
     assert(!marked(node));
-    for_each_neighbor(node,neibor){   
-      if(active(neibor)&&involved(neibor)&&marked(neibor)){
-	set_removed_status(neibor);
-	push_back(TMP_STK,int,neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor)&&involved(neighbor)&&marked(neighbor)){
+	set_removed_status(neighbor);
+	push_back(TMP_STK,int,neighbor);
       }
     }
   }
@@ -570,9 +570,9 @@ static int improve_partition(int maxlb,int target){
     int node=CFG[i];
 
     set_marked_status(node);
-    for_each_neighbor(node,neibor){   
-      if(active(neibor))
-	set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor))
+	set_marked_status(neighbor);
     }
     int newlb=0;
     for(int j=1;j<MAXIS;j++){
@@ -603,9 +603,9 @@ static int improve_partition(int maxlb,int target){
     }
    
     clr_marked_status(node);
-    for_each_neighbor(node,neibor){   
-      if(active(neibor))
-	clr_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor))
+	clr_marked_status(neighbor);
     }
     
     if(newlb>maxlb){
@@ -626,9 +626,9 @@ static int repartition_vertices(int maxlb){
       continue;
 
     set_marked_status(node);
-    for_each_neighbor(node,neibor){   
-      if(active(neibor))
-	set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor))
+	set_marked_status(neighbor);
     }
 
     for(int j=isno(node)+1;j<MAXIS;j++){
@@ -652,9 +652,9 @@ static int repartition_vertices(int maxlb){
       }
     }
     clr_marked_status(node);
-    for_each_neighbor(node,neibor){   
-      if(active(neibor))
-	clr_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor))
+	clr_marked_status(neighbor);
     }
   }
   return maxlb;
@@ -715,8 +715,8 @@ static int absorb_undomed_node(int node){
 
   int ret=FALSE;
   set_marked_status(node);
-  for_each_neighbor(node,neibor){
-    if(involved(neibor))set_marked_status(neibor);
+  for_each_neighbor(node,neighbor){
+    if(involved(neighbor))set_marked_status(neighbor);
   }
     
   int maxlb=0;
@@ -736,20 +736,20 @@ static int absorb_undomed_node(int node){
     ret=TRUE;
   }
   clr_marked_status(node);
-  for_each_neighbor(node,neibor){
-    if(involved(neibor))clr_marked_status(neibor);
+  for_each_neighbor(node,neighbor){
+    if(involved(neighbor))clr_marked_status(neighbor);
   }
   return ret;
 }
 
 static int absorb_domed_node(int node){
   int maxLB=0;
-  // printf("\n  $$testing %d with neibors \n",node);
+  // printf("\n  $$testing %d with neighbors \n",node);
   assert(domed(node));
   
-  for_each_neighbor(node,neibor){
-    if(active(neibor) && involved(neibor)){
-      set_marked_status(neibor);
+  for_each_neighbor(node,neighbor){
+    if(active(neighbor) && involved(neighbor)){
+      set_marked_status(neighbor);
     }
   }
   // printf("\n");
@@ -777,9 +777,9 @@ static int absorb_domed_node(int node){
 
   // printf("  LB=%d BEST_LEVEL = %d CUR_LEVEL =%d\n",maxLB,BEST_LEVEL,CUR_LEVEL);
   if(maxLB<BEST_LEVEL-CUR_LEVEL){
-    for_each_neighbor(node,neibor){
-      if(active(neibor) && involved(neibor)){
-	clr_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor) && involved(neighbor)){
+	clr_marked_status(neighbor);
       }
     }
     //  printf("  **%d is active\n ",node);
@@ -821,17 +821,17 @@ static int absorb_domed_node(int node){
   }
   */
   // printf("clear mark ");
-  for_each_neighbor(node,neibor){
-    if(active(neibor) && involved(neibor)){
-      // printf("%d ",neibor);
-       clr_marked_status(neibor);
+  for_each_neighbor(node,neighbor){
+    if(active(neighbor) && involved(neighbor)){
+      // printf("%d ",neighbor);
+       clr_marked_status(neighbor);
     }
   }
   // printf("  >>%d is absorbed @%d\n",node,CUR_LEVEL);
   return TRUE;
 }
 
-static void reduce_dominated_vertice(){  
+static void reduce_dominated_vertices(){  
   for(int i=CUR_LEVEL;i<CUR_UND_IDX;i++){
     int node=CFG[i];
     assert(domed(node));
@@ -849,8 +849,8 @@ static int dominated_number(int bnode){
     assert(!branched(bnode));
     if(!domed(bnode))
       count=1;
-    for_each_neighbor(bnode,neibor){
-      if(active(neibor) && !domed(neibor))
+    for_each_neighbor(bnode,neighbor){
+      if(active(neighbor) && !domed(neighbor))
 	count++;
     }
     return count;
@@ -873,8 +873,8 @@ int select_branching_node(){
     assert(!branched(bnode));
     if(!domed(bnode))
       count=1;
-    for_each_neighbor(bnode,neibor){
-      if(active(neibor) && !domed(neibor))
+    for_each_neighbor(bnode,neighbor){
+      if(active(neighbor) && !domed(neighbor))
 	count++;
     }
     if(count>max_count){
@@ -928,12 +928,12 @@ static void push_fixed_vertices(){
 
       set_domed_status(prenode);
       set_branched_status(prenode); 
-      for_each_neighbor(prenode,neibor){
-	if(active(neibor) && !domed(neibor)){
+      for_each_neighbor(prenode,neighbor){
+	if(active(neighbor) && !domed(neighbor)){
 	  int first=CFG[CUR_UND_IDX];
-	  if(first!=neibor)
-	    swap_cfg(first,neibor);
-	  set_domed_status(neibor);
+	  if(first!=neighbor)
+	    swap_cfg(first,neighbor);
+	  set_domed_status(neighbor);
 	  CUR_UND_IDX++;
 	}
       }
@@ -974,8 +974,8 @@ static inline void sorting_branch_vertices(int startidx){
     assert(!branched(bnode));
     if(!domed(bnode))
       count=1;
-    for_each_neighbor(bnode,neibor){
-      if(active(neibor) && !domed(neibor))
+    for_each_neighbor(bnode,neighbor){
+      if(active(neighbor) && !domed(neighbor))
 	count++;
     }
     Node_Degree[bnode]=count;
@@ -992,7 +992,7 @@ void search_domset(){
   #endif
   while(CUR_LEVEL>=0){
     #if CHECK
-    check_consistance();
+    check_consistency();
     #endif    
     if((bnode=CUR_BRA_NODE)!=NONE){
       rollback_branch_node(bnode);     
@@ -1032,14 +1032,14 @@ void search_domset(){
       domc++;
     }
       
-    for_each_neighbor(bnode,neibor){
-      if(active(neibor) && !domed(neibor)){
+    for_each_neighbor(bnode,neighbor){
+      if(active(neighbor) && !domed(neighbor)){
 	domc++;
-	assert(!fixed(neibor));
+	assert(!fixed(neighbor));
 	int first=CFG[CUR_UND_IDX];
-	if(first!=neibor)
-	  swap_cfg(first,neibor);
-	set_domed_status(neibor);
+	if(first!=neighbor)
+	  swap_cfg(first,neighbor);
+	set_domed_status(neighbor);
 	CUR_UND_IDX++;
       }
     }
@@ -1070,7 +1070,7 @@ void search_domset(){
         }
       #endif
       #ifdef CHECK
-        test_iset_consistance();
+        test_iset_consistency();
       #endif
     #else
       for(int i=SUB_PROBLEM_SIZE-1;i>=CUR_UND_IDX;i--){
@@ -1102,8 +1102,8 @@ void search_domset(){
       
       int count=0;
       if(domed(node)){
-	for_each_neighbor(node,neibor){
-	  if(active(neibor) && !domed(neibor)){
+	for_each_neighbor(node,neighbor){
+	  if(active(neighbor) && !domed(neighbor)){
 	    count++;
 	    break;
 	  }
@@ -1189,11 +1189,11 @@ int fast_search_initial_solution(){
     if(fixed(node)){
       push_back(VEC_SOLUTION,int,node);
       set_branched_status(node);
-      for_each_neighbor(node,neibor){
-	if(!active(neibor) || node==neibor)continue;
-	if(!domed(neibor)){
+      for_each_neighbor(node,neighbor){
+	if(!active(neighbor) || node==neighbor)continue;
+	if(!domed(neighbor)){
 	  NB_Domed++;
-	  set_domed_status(neibor);
+	  set_domed_status(neighbor);
 	}
       }
       if(!domed(node)){
@@ -1207,9 +1207,9 @@ int fast_search_initial_solution(){
     if(fixed(node))continue;
     if(!domed(node))Val[node]=1;
     else Val[node]=0;
-    for_each_neighbor(node,neibor){
-      if(neibor==node)continue;
-      if(active(neibor) && !domed(neibor)){
+    for_each_neighbor(node,neighbor){
+      if(neighbor==node)continue;
+      if(active(neighbor) && !domed(neighbor)){
 	Val[node]++;
       }
     }
@@ -1233,13 +1233,13 @@ int fast_search_initial_solution(){
     assert(Val[bnode]>0 && Val[bnode]<=Node_Degree[bnode]+1);
     push_back(VEC_SOLUTION,int,bnode);
     set_branched_status(bnode);
-    for_each_neighbor(bnode,neibor){
-      if(!active(neibor) || bnode==neibor)continue;
-      if(!domed(neibor)){
+    for_each_neighbor(bnode,neighbor){
+      if(!active(neighbor) || bnode==neighbor)continue;
+      if(!domed(neighbor)){
 	NB_Domed++;
-	set_domed_status(neibor);
-	for_each_neighbor(neibor,nei)if(active(nei) && !fixed(nei) && nei!=neibor)Val[nei]--;
-	Val[neibor]--;
+	set_domed_status(neighbor);
+	for_each_neighbor(neighbor,nei)if(active(nei) && !fixed(nei) && nei!=neighbor)Val[nei]--;
+	Val[neighbor]--;
       }
     }
     if(!domed(bnode)){
@@ -1278,8 +1278,8 @@ static int search_initial_solution(){
       if(!domed(node))
 	count=1;
       
-      for_each_neighbor(node,neibor){
-	if(active(neibor) && !domed(neibor))
+      for_each_neighbor(node,neighbor){
+	if(active(neighbor) && !domed(neighbor))
 	  count++;
       }
       if(count>max){
@@ -1292,8 +1292,8 @@ static int search_initial_solution(){
       push_back(VEC_SOLUTION,int,bnode);
       set_domed_status(bnode);
       set_branched_status(bnode);
-      for_each_neighbor(bnode,neibor){
-	set_domed_status(neibor);
+      for_each_neighbor(bnode,neighbor){
+	set_domed_status(neighbor);
       }          
     }else{
       int *ptr=CFG,*end=CFG+SUB_PROBLEM_SIZE;
@@ -1394,8 +1394,8 @@ void check_final_solution(){
      set_marked_status(node);
      assert(!included(node));
      set_included_status(node);
-    for_each_neighbor(node,neibor){
-        set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+        set_marked_status(neighbor);
     }
   }
  
@@ -1410,8 +1410,8 @@ void check_final_solution(){
   for_each_vertex(node){
      if(deleted(node)){
       int flag=0;
-      for_each_neighbor(node,neibor){
-        if(included(neibor)){
+      for_each_neighbor(node,neighbor){
+        if(included(neighbor)){
 	  flag=1;
 	  break;
 	}
@@ -1443,9 +1443,9 @@ void check_and_save_solution(){
     set_included_status(node);
     push_back(VEC_SOLUTION,int,node);
     set_marked_status(node);
-    for_each_neighbor(node,neibor){
-      if(active(neibor))
-        set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(active(neighbor))
+        set_marked_status(neighbor);
     }
   }
   for_each_vertex(node){
@@ -1456,7 +1456,7 @@ void check_and_save_solution(){
   }
 }
 
-void check_consistance(){
+void check_consistency(){
   
   for(int i=0;i<SUB_PROBLEM_SIZE;i++){
     assert(CFG[i]>=1 && CFG[i]<=NB_NODE);
@@ -1485,15 +1485,15 @@ void check_consistance(){
     int node=branch_node_at_level(i);
      assert(node>=1 && node<=NB_NODE);
      assert(domed(node));
-    for_each_neighbor(node,neibor){
-      if(!active(neibor))
+    for_each_neighbor(node,neighbor){
+      if(!active(neighbor))
 	continue;
-      assert(domed(neibor));
-      assert(active(neibor));
-      assert(LOC[neibor]<CUR_UND_IDX);
+      assert(domed(neighbor));
+      assert(active(neighbor));
+      assert(LOC[neighbor]<CUR_UND_IDX);
     }
   }
-  // printf("pass consistance checking at level %d ...\n",CUR_LEVEL);
+  // printf("pass consistency checking at level %d ...\n",CUR_LEVEL);
   fflush(stdout);
 }
 

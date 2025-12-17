@@ -255,7 +255,7 @@ k_means.fit(X)
 t_kmeans = time.time() - t0
 
 # %%
-# Reapllying the same process as before
+# Reapplying the same process as before
 # --------------------------------------
 
 rad_centers_index = np.array(rad.centers_)

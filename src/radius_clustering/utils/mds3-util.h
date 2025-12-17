@@ -38,7 +38,7 @@
 #define MAXIS 16
 
 #define for_each_vertex(node) for(int node=1;node<=NB_NODE;node++)
-#define for_each_neighbor(__vertex,__neibor)  for(int * __ptr=Node_Neibors[__vertex],__neibor=*__ptr;__neibor!=NONE;__neibor=*(++__ptr))
+#define for_each_neighbor(__vertex,__neighbor)  for(int * __ptr=Node_Neighbors[__vertex],__neighbor=*__ptr;__neighbor!=NONE;__neighbor=*(++__ptr))
 
 #define domed(node) (STATUS[node].dominated)
 #define clr_domed_status(node) (STATUS[node].dominated=0)
@@ -180,7 +180,7 @@ typedef struct{
 static int * Init_Adj_List;
 static int BLOCK_COUNT = 0;
 static int *BLOCK_LIST[100];
-static int **Node_Neibors;
+static int **Node_Neighbors;
 
 static unsigned Node_Degree[MAX_NODE];
 
@@ -256,18 +256,18 @@ static VEC_INT * VEC_SOLUTION;
 static int NB_FIXED=0,NEW_IDX=0,NB_UNFIXED=0;
 
 
-static void allcoate_memory_for_adjacency_list(int nb_node, int nb_edge,int offset) {
+static void allocate_memory_for_adjacency_list(int nb_node, int nb_edge,int offset) {
   int i, block_size = 40960000;
   unsigned int free_size = 0;
   Init_Adj_List = (int *) malloc((2 * nb_edge + nb_node) * sizeof(int));
   if (Init_Adj_List == NULL ) {
     for (i = 1; i <= NB_NODE; i++) {
       if (Node_Degree[i - offset] + 1 > free_size) {
-	Node_Neibors[i] = (int *) malloc(block_size * sizeof(int));
-	BLOCK_LIST[BLOCK_COUNT++] = Node_Neibors[i];
+	Node_Neighbors[i] = (int *) malloc(block_size * sizeof(int));
+	BLOCK_LIST[BLOCK_COUNT++] = Node_Neighbors[i];
 	free_size = block_size - (Node_Degree[i - offset] + 1);
       } else {
-	Node_Neibors[i] = Node_Neibors[i - 1]
+	Node_Neighbors[i] = Node_Neighbors[i - 1]
 	  + Node_Degree[i - 1 - offset] + 1;
 	free_size = free_size - (Node_Degree[i - offset] + 1);
       }
@@ -275,9 +275,9 @@ static void allcoate_memory_for_adjacency_list(int nb_node, int nb_edge,int offs
   } else {
     BLOCK_COUNT = 1;
     BLOCK_LIST[BLOCK_COUNT - 1] = Init_Adj_List;
-    Node_Neibors[1] = Init_Adj_List;
+    Node_Neighbors[1] = Init_Adj_List;
     for (i = 2; i <= NB_NODE; i++) {
-      Node_Neibors[i] = Node_Neibors[i - 1] + Node_Degree[i - 1 - offset]
+      Node_Neighbors[i] = Node_Neighbors[i - 1] + Node_Degree[i - 1 - offset]
 	+ 1;
     }
   }
@@ -308,8 +308,8 @@ static int _read_graph_from_edge_list(unsigned int* edges, int n, int nb_edges) 
   }
   NB_NODE = max_node;
 
-  Node_Neibors = (int **)malloc((NB_NODE + 1) * sizeof(int *));
-  allcoate_memory_for_adjacency_list(NB_NODE, nb_edge, 1);
+  Node_Neighbors = (int **)malloc((NB_NODE + 1) * sizeof(int *));
+  allocate_memory_for_adjacency_list(NB_NODE, nb_edge, 1);
   memset(Node_Degree, 0, (NB_NODE + 1) * sizeof(int));
 
   nb_edge = 0;
@@ -322,13 +322,13 @@ static int _read_graph_from_edge_list(unsigned int* edges, int n, int nb_edges) 
         r_node += offset;
       }
       for (i = 0; i < Node_Degree[l_node]; i++) {
-        if (Node_Neibors[l_node][i] == r_node) 
+        if (Node_Neighbors[l_node][i] == r_node) 
           break;
         
       }
       if (i == Node_Degree[l_node]) {
-        Node_Neibors[l_node][Node_Degree[l_node]] = r_node;
-        Node_Neibors[r_node][Node_Degree[r_node]] = l_node;
+        Node_Neighbors[l_node][Node_Degree[l_node]] = r_node;
+        Node_Neighbors[r_node][Node_Degree[r_node]] = l_node;
         Node_Degree[l_node]++;
         Node_Degree[r_node]++;
         nb_edge++;
@@ -339,7 +339,7 @@ static int _read_graph_from_edge_list(unsigned int* edges, int n, int nb_edges) 
   NB_EDGE = nb_edge;
   Max_Degree = 0;
   for (node = 1; node <= NB_NODE; node++) {
-    Node_Neibors[node][Node_Degree[node]] = NONE;
+    Node_Neighbors[node][Node_Degree[node]] = NONE;
     if (Node_Degree[node] > Max_Degree) {
       Max_Degree = Node_Degree[node];
       Max_Degree_Node = node;
@@ -387,50 +387,50 @@ static inline void reduce_graph2(){
     if(deleted(node))continue;
 
     set_marked_status(node);
-    for_each_neighbor(node,neibor){
-      set_marked_status(neibor);
+    for_each_neighbor(node,neighbor){
+      set_marked_status(neighbor);
     }
 
-    for_each_neighbor(node,neibor){
-      if(fixed(neibor)){
-	set_branched_status(neibor);
+    for_each_neighbor(node,neighbor){
+      if(fixed(neighbor)){
+	set_branched_status(neighbor);
 	continue;
       }
-      for_each_neighbor(neibor,neibor2){
-	if(!marked(neibor2)){
-	  set_branched_status(neibor);
+      for_each_neighbor(neighbor,neighbor2){
+	if(!marked(neighbor2)){
+	  set_branched_status(neighbor);
 	  break;
 	}
       }
     }
 
-    for_each_neighbor(node,neibor){
-      if(branched(neibor))
+    for_each_neighbor(node,neighbor){
+      if(branched(neighbor))
 	continue;
-      for_each_neighbor(neibor,neibor2){
-	if(branched(neibor2)){
-	  set_involved_status(neibor);
+      for_each_neighbor(neighbor,neighbor2){
+	if(branched(neighbor2)){
+	  set_involved_status(neighbor);
 	  break;
 	}
       }
-      if(!involved(neibor)){
+      if(!involved(neighbor)){
 	fixed(node)=1;
 	break;
       }
     }
     
     if(fixed(node)){
-      for_each_neighbor(node,neibor){
-	if(!branched(neibor))
-	  deleted(neibor)=1;
+      for_each_neighbor(node,neighbor){
+	if(!branched(neighbor))
+	  deleted(neighbor)=1;
       }
     }
 
     clr_marked_status(node);
-    for_each_neighbor(node,neibor){
-      clr_marked_status(neibor);
-      clr_involved_status(neibor); 
-      clr_branched_status(neibor);
+    for_each_neighbor(node,neighbor){
+      clr_marked_status(neighbor);
+      clr_involved_status(neighbor);
+      clr_branched_status(neighbor);
     }
   }
 
@@ -441,10 +441,10 @@ static inline void reduce_graph2(){
     if(deleted(node))
       continue;
     
-    int *ptr=Node_Neibors[node],count=0;
-    for_each_neighbor(node,neibor){
-      if(!deleted(neibor)){
-	*ptr++=neibor;count++;
+    int *ptr=Node_Neighbors[node],count=0;
+    for_each_neighbor(node,neighbor){
+      if(!deleted(neighbor)){
+	*ptr++=neighbor;count++;
       }
     }
     *ptr=NONE;
@@ -476,7 +476,7 @@ static inline void reduce_graph(){
 			Me = Que[Ql++];
 			if (Dis[Me] == 2)break;
 			for (int j = 0; j < Node_Degree[Me]; j++) {
-				tt = Node_Neibors[Me][j];
+				tt = Node_Neighbors[Me][j];
 				//if(Deleted[tt])continue;
 				//if(Me==1)printf("**%d\n",tt);
 				if (Dis[tt] <= 1)continue;
@@ -498,7 +498,7 @@ static inline void reduce_graph(){
 			if(Col[Que[j]]==1)continue;
 			Me=Que[j];
 			for(int k=0;k<Node_Degree[Me];k++){
-				tt=Node_Neibors[Me][k];
+				tt=Node_Neighbors[Me][k];
 				//if(Deleted[tt])continue;
 				if(Col[tt]==1){
 					ColCnt++;
@@ -539,12 +539,12 @@ static inline void reduce_graph(){
 	
 	  int NeiCnt=0;
 	  for(int j=0;j<Node_Degree[i];j++){
-	    int tt=Node_Neibors[i][j];
+	    int tt=Node_Neighbors[i][j];
 	    if(Deleted[tt])continue;
-	    Node_Neibors[i][NeiCnt++]=tt;
+	    Node_Neighbors[i][NeiCnt++]=tt;
 	  }
 	  Node_Degree[i]=NeiCnt;
-	  Node_Neibors[i][NeiCnt]=NONE;
+	  Node_Neighbors[i][NeiCnt]=NONE;
 	}
 	//printf("\n");
 	free(Que);
@@ -563,7 +563,7 @@ static inline void reduce_graph(){
 extern void check_final_solution();
 extern void update_best_solution();
 extern void check_and_save_solution();
-extern void check_consistance();
+extern void check_consistency();
 extern void cleanup();
 extern int max_dominated_number();
 extern int select_branching_node();

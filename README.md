@@ -72,7 +72,7 @@ print(labels)
 
 ## Documentation
 
-You can find the full documentation for Radius Clustering [here](https://contrib.scikit-learn.org/radius_clustering/).
+See the [full documentation for Radius Clustering](https://contrib.scikit-learn.org/radius_clustering/).
 
 ### Building the documentation
 

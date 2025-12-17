@@ -76,4 +76,4 @@ All notable changes to this project will be documented in this file.
 - Added a badge for the code style (Ruff) in the README.
 - Added a badge for the license in the README.
 - Added CI/CD pipelines for PyPI deployment (including test coverage, compiling extensions and wheels, and uploading to PyPI).
-- Resolving issues with compiling Cython extensions on Windows and MacOS.
+- Resolving issues with compiling Cython extensions on Windows and macOS.
